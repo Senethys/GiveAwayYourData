@@ -11,21 +11,27 @@ jobs:
   build_and_deploy_job:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        submodules: true
 
-      - name: Install Dependencies
-        run: |
-          pip install -r requirements.txt
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'  # Adjust to your Python version
 
-      - name: Build And Deploy
-        id: builddeploy
-        uses: Azure/static-web-apps-deploy@v1  # Corrected action casing and version
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.DEPLOYMENT_TOKEN }}  # Correct parameter name for @v1
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          app_location: "/"  # Adjust if your app is in a subdirectory
-          api_location: ""   # Set if you have an API
-          app_artifact_location: ""  # Leave empty for Python apps
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Build And Deploy
+      id: builddeploy
+      uses: Azure/static-web-apps-deploy@v1  # Corrected action reference
+      with:
+        azure_static_web_apps_api_token: ${{ secrets.DEPLOYMENT_TOKEN }}  # Correct parameter name
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        action: "upload"
+        app_location: "/"  # Adjust if your app is in a subdirectory
+        api_location: ""   # Set if you have an API
+        app_artifact_location: "."  # Set to current directory for Python apps
