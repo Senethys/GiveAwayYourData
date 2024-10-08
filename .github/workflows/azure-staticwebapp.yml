@@ -21,11 +21,11 @@ jobs:
 
       - name: Build And Deploy
         id: builddeploy
-        uses: Azure/static-web-apps-deploy@v1
+        uses: Azure/static-web-apps-deploy@v1.1.5  # Updated action version
         with:
-          deployment_token: ${{ secrets.DEPLOYMENT_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for GitHub integrations (i.e., PR comments)
+          deployment_token: ${{ secrets.DEPLOYMENT_TOKEN }}  # Corrected parameter name
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "/"  # Adjust if your app is in a subdirectory
-          api_location: ""   # Remove or set to the directory if you have an API
+          api_location: ""   # Set if you have an API
           app_artifact_location: ""  # Leave empty for Python apps
