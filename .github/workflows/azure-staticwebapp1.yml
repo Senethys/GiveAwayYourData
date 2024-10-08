@@ -8,7 +8,7 @@
 # 1. Set up a secret in your repository named DEPLOYMENT_TOKEN with the value of your Static Web Apps deployment token.
 #    For instructions on obtaining the deployment token see: https://docs.microsoft.com/azure/static-web-apps/deployment-token-management
 #
-# 3. Change the values for the APP_LOCATION, API_LOCATION and APP_ARTIFACT_LOCATION, DEPLOYMENT_TOKEN environment variables (below).
+# 3. Change the values for the APP_LOCATION, API_LOCATION, and APP_ARTIFACT_LOCATION, DEPLOYMENT_TOKEN environment variables (below).
 #    For instructions on setting up the appropriate configuration values go to https://docs.microsoft.com/azure/static-web-apps/front-end-frameworks
 
 name: Deploy web app to Azure Static Web Apps
@@ -42,6 +42,18 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
+
+      # Step to install dependencies and build the app (this depends on your framework)
+      - name: Install and Build
+        run: |
+          npm install # assuming Node.js is used
+          npm run build # adjust according to your build script, e.g. npm run build, yarn build, etc.
+      
+      # Ensure the build output is available in the correct folder
+      - name: Move Build Folder
+        run: |
+          mv ./dist ./build # Adjust this to match the actual folder produced by the build process (e.g., dist, public, etc.)
+      
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
