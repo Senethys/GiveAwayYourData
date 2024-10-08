@@ -21,9 +21,9 @@ jobs:
 
       - name: Build And Deploy
         id: builddeploy
-        uses: Azure/static-web-apps-deploy@v1.1.5  # Updated action version
+        uses: Azure/static-web-apps-deploy@v1.1.6  # Corrected action version and casing
         with:
-          deployment_token: ${{ secrets.DEPLOYMENT_TOKEN }}  # Corrected parameter name
+          deployment_token: ${{ secrets.DEPLOYMENT_TOKEN }}  # Correct parameter name
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "/"  # Adjust if your app is in a subdirectory
