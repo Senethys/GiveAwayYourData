@@ -7,12 +7,6 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches: [ "master" ]
 
-env:
-  APP_LOCATION: "/" # location of your client code
-  API_LOCATION: "api" # location of your api source code - optional
-  APP_ARTIFACT_LOCATION: "build" # update this based on the actual build output folder
-  AZURE_STATIC_WEB_APPS_API_TOKEN: ${{ secrets.DEPLOYMENT_TOKEN }} # secret containing deployment token for your static web app
-
 jobs:
   build_and_deploy_job:
     runs-on: ubuntu-latest
@@ -21,21 +15,17 @@ jobs:
         with:
           submodules: true
 
-      - name: Install and Build
+      - name: Install Dependencies
         run: |
-          npm install
-          npm run build # or relevant build command for your app
-
-      - name: List directory contents
-        run: ls -la # This will print the directory contents after the build step
+          pip install -r requirements.txt
 
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
-          deployment_token: ${{ secrets.DEPLOYMENT_TOKEN }} # Corrected parameter name
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          deployment_token: ${{ secrets.DEPLOYMENT_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for GitHub integrations (i.e., PR comments)
           action: "upload"
-          app_location: ${{ env.APP_LOCATION }}
-          api_location: ${{ env.API_LOCATION }}
-          app_artifact_location: "build" # this will need to be updated based on the directory listing
+          app_location: "/"  # Adjust if your app is in a subdirectory
+          api_location: ""   # Remove or set to the directory if you have an API
+          app_artifact_location: ""  # Leave empty for Python apps
